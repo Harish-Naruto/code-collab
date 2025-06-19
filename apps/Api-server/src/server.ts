@@ -7,5 +7,5 @@ dotenv.config();
 
 const app = express();
 
-console.log('Starting API server at port 3000...');
+console.log('Starting API server at port 3000......');
 app.listen(3000);
