@@ -1,16 +1,23 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './Pages/Login';
+import Signup from './Pages/Signup';
+import Dashboard from './Pages/Dashboard';
+import LandingPage from './Pages/Landingpage';
+import ForgotPassword from './Pages/ForgotPassword';
 
-import './App.css'
-
-function App() {
-  
-
+const App: React.FC = () => {
   return (
-    <>
-      <div>
-        <div className='bg-red-400 text-white'>hello world</div>
-      </div>
-    </>
-  )
-}
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+      </Routes>
+    </Router>
+  );
+};
 
-export default App
+export default App;
