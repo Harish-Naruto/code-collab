@@ -62,6 +62,12 @@ const Login: React.FC = () => {
             Sign up
           </Link>
         </p>
+        <p className="text-center text-sm">
+          Forgot your password?{' '}
+          <Link to="/forgot-password" className="text-blue-400 hover:underline">
+            Reset it
+          </Link>
+        </p>
       </div>
     </div>
   );
