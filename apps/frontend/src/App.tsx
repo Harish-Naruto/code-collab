@@ -1,16 +1,21 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './Login';
+import Signup from './Signup';
+import Dashboard from './Dashboard';
+import LandingPage from './Landingpage';
 
-import './App.css'
-
-function App() {
-  
-
+const App: React.FC = () => {
   return (
-    <>
-      <div>
-        <div className='bg-red-400 text-white'>hello world</div>
-      </div>
-    </>
-  )
-}
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </Router>
+  );
+};
 
-export default App
+export default App;
