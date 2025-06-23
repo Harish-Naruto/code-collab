@@ -1,4 +1,5 @@
 import {z} from 'zod'
+import { email } from 'zod/v4'
 
 export const userSchema = z.object({
     name:z.string().max(30),
@@ -7,3 +8,9 @@ export const userSchema = z.object({
     password: z.string().min(3).max(20).regex(/[^a-zA-Z0-9]/).regex(/[a-z]/),
     
 })
+
+export const resetPasswordSchema = z.object({
+    email:z.string().email(),    
+    password: z.string().min(3).max(20).regex(/[^a-zA-Z0-9]/).regex(/[a-z]/),
+    otp:z.string().max(7)
+})  
