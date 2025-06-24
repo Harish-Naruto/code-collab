@@ -22,28 +22,6 @@ app.get('/health', (req, res) => {
   res.status(StatusCodes.OK).json({ status: 'OK' });
 });
 
-app.post('/verify', async (req: Request, res: Response) => {
-  const authHeader = req.headers.authorization;
-  const token = authHeader?.split(' ')[1];
-  
-  if (!token) {
-     res.status(401).json({ error: 'Missing token' });
-  }
-  
-  const { data: user, error } = await supabase.auth.getUser(token);
-  
-  if (error) {
-     res.status(401).json({ error: error.message });
-  }
-  
-  //check if user
-  //if user exist then generateToken and return token 
-  //if user doesnot exist then create user in user table and then return token
-
-
-  console.log(user);
-  res.json({ user });
-});
 
 app.use('/api/auth',authRoutes);
 

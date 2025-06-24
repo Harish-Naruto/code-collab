@@ -12,7 +12,7 @@ export default function LandingPage(){
         if (data.session) {
           const accessToken = data.session.access_token;
   
-          const res = await fetch('http://localhost:3000/verify', {
+          const res = await fetch('http://localhost:3000/api/auth/verify', {
             method: 'POST',
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -20,8 +20,11 @@ export default function LandingPage(){
           });
   
           const result = await res.json();
+          localStorage.clear();
+          localStorage.setItem('token', result.token);
           console.log('User from backend:', result.user);
           navigate('/dashboard')
+
         }
       };
   
