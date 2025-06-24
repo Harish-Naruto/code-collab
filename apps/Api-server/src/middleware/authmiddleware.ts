@@ -16,7 +16,7 @@ interface AuthRequest extends Request {
 export const protect = async(req:AuthRequest,res:Response,next:NextFunction)=>{
     
         const authheader = req.headers.authorization;
-        if(!authheader || !authheader.startsWith('Bearer')){
+        if(!authheader || !authheader.startsWith('Bearer ')){
             throw new AppError("No token in headers",StatusCodes.UNAUTHORIZED);
         }
         const token = authheader.split(' ')[1] as string;

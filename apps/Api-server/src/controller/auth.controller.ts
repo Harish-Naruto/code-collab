@@ -105,7 +105,6 @@ export const forgotpassword = async (req: Request, res: Response, next: NextFunc
 
 export const resetpassword = async (req: Request, res: Response, next: NextFunction) => {
     const { email, otp, newPassword } = req.body;
-    console.log(email);
     const isValid = otpStorage.verify(email, otp);
     if (!isValid) {
         throw new AppError("Invalid OTP", StatusCodes.BAD_REQUEST);
@@ -123,7 +122,7 @@ export const resetpassword = async (req: Request, res: Response, next: NextFunct
     if (!user) {
         throw new Error(`No auth user found for email ${email}`);
     }
-    console.log(user)
+    
 
     const { data, error: err } = await supabase.auth.admin.updateUserById(user.id, {
         password: newPassword
@@ -136,5 +135,66 @@ export const resetpassword = async (req: Request, res: Response, next: NextFunct
         message: 'password updated'
     })
 
-
 }
+
+export const login = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { email, password } = req.body;
+
+        
+        const { data: authUser, error: authError } = await supabase.auth.signInWithPassword({
+            email,
+            password
+        });
+
+        if (authError) {
+            throw new AppError(authError.message, StatusCodes.UNAUTHORIZED);
+        }
+
+        if (!authUser.user) {
+            throw new AppError('Invalid credentials', StatusCodes.UNAUTHORIZED);
+        }
+
+        
+        const { data: user, error } = await supabase
+            .from('Users')
+            .select('*')
+            .eq('id', authUser.user.id)
+            .single();
+
+        if (error || !user) {
+            throw new AppError('User profile not found', StatusCodes.UNAUTHORIZED);
+        }
+
+        const token = generateToken(user.id);
+
+        res.status(StatusCodes.OK).json({
+            status: 'success',
+            data: {
+                user: {
+                    email: user.email
+                },
+                token
+            }
+        });
+    } catch (error) {
+        console.error('Login error:', error);
+        next(error);
+    }
+};
+
+// export const loginWithGoogle = async (req: Request, res: Response, next: NextFunction) => {
+//   try {
+//     const { data, error } = await supabase.auth.signInWithOAuth({
+//       provider: 'google',
+//     });
+
+//     if (error) throw error;
+
+//     res.json({
+//       url: data.url,
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
