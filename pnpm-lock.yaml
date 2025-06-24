@@ -81,6 +81,9 @@ importers:
 
   apps/frontend:
     dependencies:
+      '@supabase/supabase-js':
+        specifier: ^2.50.0
+        version: 2.50.0
       '@tailwindcss/vite':
         specifier: ^4.1.10
         version: 4.1.10(vite@6.3.5(@types/node@22.15.3)(jiti@2.4.2)(lightningcss@1.30.1))

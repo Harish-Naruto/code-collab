@@ -15,6 +15,8 @@ router.post('/resetPassword',validate(resetPasswordSchema),resetpassword);
 
 router.post('/login', login);
 
+
+
 //router.get('/oauth/google', loginWithGoogle);
 
 export default router

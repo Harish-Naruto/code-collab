@@ -28,7 +28,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
             .eq('email', email)
             .single();
 
-        if (existingUser) {
+        if (!existingUser) {
             throw new AppError('User already exists', StatusCodes.BAD_REQUEST)
         }
 
@@ -182,6 +182,9 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         next(error);
     }
 };
+
+
+
 
 // export const loginWithGoogle = async (req: Request, res: Response, next: NextFunction) => {
 //   try {

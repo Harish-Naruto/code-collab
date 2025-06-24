@@ -1,7 +1,35 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { supabase } from '../config/supabase';
 
-const LandingPage: React.FC = () => {
+export default function LandingPage(){
+
+    const navigate = useNavigate();
+    useEffect(() => {
+      const handleCallback = async () => {
+        const { data } = await supabase.auth.getSession();
+  
+        if (data.session) {
+          const accessToken = data.session.access_token;
+  
+          const res = await fetch('http://localhost:3000/verify', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+  
+          const result = await res.json();
+          console.log('User from backend:', result.user);
+          navigate('/dashboard')
+        }
+      };
+  
+      handleCallback();
+    }, []);
+
+
+
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-4">
       <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500 mb-6 text-center">
@@ -28,4 +56,5 @@ const LandingPage: React.FC = () => {
   );
 };
 
-export default LandingPage;
+
+

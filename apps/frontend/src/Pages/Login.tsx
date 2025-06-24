@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { supabase } from '../config/supabase';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const navigate = useNavigate();
+
+  const handleOauth = async ()=>{
+    await supabase.auth.signInWithOAuth({
+      provider:'google',
+    })
+  }
 
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -56,6 +63,8 @@ const Login: React.FC = () => {
             Login
           </button>
         </form>
+        <button onClick={handleOauth}>login with google</button>
+
         <p className="text-center text-sm">
           Don't have an account?{' '}
           <Link to="/signup" className="text-blue-400 hover:underline">
