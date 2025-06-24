@@ -201,3 +201,66 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 //     next(error);
 //   }
 // };
+
+export const verify = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const authHeader = req.headers.authorization;
+        const token = authHeader?.split(' ')[1];
+
+        if (!token) {
+            throw new AppError('Missing token', StatusCodes.UNAUTHORIZED);
+        }
+
+        const { data: userData, error } = await supabase.auth.getUser(token);
+
+        if (error || !userData.user) {
+            throw new AppError(error?.message || 'Invalid token', StatusCodes.UNAUTHORIZED);
+        }
+
+        const userId = userData.user.id;
+        const email = userData.user.email;
+        const name = userData.user.user_metadata?.name || '';
+        const avatarUrl = userData.user.user_metadata?.avatar_url || '';
+        
+        if (!userId || !email) {
+            throw new AppError('Invalid user data from Supabase', StatusCodes.BAD_REQUEST);
+        }
+        const username = email.split('@')[0];
+
+        // Check if user exists in Users table
+        const { data: existingUser, error: userError } = await supabase
+            .from('Users')
+            .select('*')
+            .eq('email', email)
+            .single();
+
+        if (!existingUser) {
+            // Create user
+            const { error: insertError } = await supabase
+                .from('Users')
+                .insert([{ id: userId, email, username, name, avatar_url: avatarUrl }]);
+
+            if (insertError) {
+                throw new Error(insertError.message);
+            }
+        }
+
+        const generatedToken = generateToken(userId);
+
+        res.status(StatusCodes.OK).json({
+            status: 'success',
+            token: generatedToken
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
+
+
+
+
+
+
