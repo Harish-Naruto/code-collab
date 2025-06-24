@@ -11,6 +11,6 @@ export const userSchema = z.object({
 
 export const resetPasswordSchema = z.object({
     email:z.string().email(),    
-    password: z.string().min(3).max(20).regex(/[^a-zA-Z0-9]/).regex(/[a-z]/),
+    newPassword: z.string().min(3).max(20).regex(/[^a-zA-Z0-9]/).regex(/[a-z]/),
     otp:z.string().max(7)
 })  
