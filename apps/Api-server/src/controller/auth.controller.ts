@@ -7,6 +7,7 @@ import { StatusCodes } from 'http-status-codes';
 import { AppError } from '../utils/errorhandler';
 import { otpStorage } from '../libs/opt.store';
 import { sendOTP } from '../utils/email';
+import { AuthRequest } from '../types/types';
 
 
 const generateToken = (id: string,email:String) => {
@@ -14,6 +15,9 @@ const generateToken = (id: string,email:String) => {
         expiresIn: jwt_expiresIn as number
     });
 }
+
+
+
 
 const generateOtp = () => {
     return Math.floor(100000 + Math.random() * 900000).toString();
@@ -125,9 +129,14 @@ export const verifyOtp = async(req:Request,res:Response,next:NextFunction) =>{
     })
 };
 
-export const resetpassword = async (req: Request, res: Response, next: NextFunction) => {
+export const resetpassword = async (req: AuthRequest, res: Response, next: NextFunction) => {
     //token logic added
-    const { email, newPassword } = req.body;
+    const {newPassword } = req.body;
+    const email = req.user?.email;
+
+    if(!email){
+        throw new AppError("email is undefined",StatusCodes.BAD_REQUEST)
+    }
 
     const {
         data: { users },

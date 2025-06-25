@@ -4,14 +4,10 @@ import { Request,Response,NextFunction } from 'express';
 import { AppError } from '../utils/errorhandler';
 import { StatusCodes } from 'http-status-codes';
 import { supabase } from '../config/supabase';
+import { AuthRequest } from '../types/types';
 ;
 
-interface AuthRequest extends Request {
-    user?:{
-        id:string;
-        email:string;
-    }
-}
+
 
 
 export const protect = async(req:AuthRequest,res:Response,next:NextFunction)=>{

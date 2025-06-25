@@ -11,9 +11,7 @@ export const userSchema = z.object({
 })
 
 export const resetPasswordSchema = z.object({  
-    token:z.string(), 
     newPassword: z.string().min(3).max(20).regex(/[^a-zA-Z0-9]/).regex(/[a-z]/),
-    
 })  
 
 export const forgotPasswordSchema = z.object({
