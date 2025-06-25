@@ -5,6 +5,8 @@ import Signup from './Pages/Signup';
 import Dashboard from './Pages/Dashboard';
 import LandingPage from './Pages/Landingpage';
 import ForgotPassword from './Pages/ForgotPassword';
+import CreateRoom from './Pages/CreateRoom';
+import JoinRoom from './Pages/JoinRoom';
 
 const App: React.FC = () => {
   return (
@@ -15,6 +17,8 @@ const App: React.FC = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/create-room" element={<CreateRoom />} />
+        <Route path="/join-room" element={<JoinRoom />} />
       </Routes>
     </Router>
   );
