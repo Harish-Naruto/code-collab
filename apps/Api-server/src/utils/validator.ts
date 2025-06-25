@@ -1,6 +1,7 @@
 import {z} from 'zod'
 import { email } from 'zod/v4'
 
+
 export const userSchema = z.object({
     name:z.string().max(30),
     username:z.string().min(3).max(20),
@@ -9,8 +10,12 @@ export const userSchema = z.object({
     
 })
 
-export const resetPasswordSchema = z.object({
-    email:z.string().email(),    
+export const resetPasswordSchema = z.object({  
+    token:z.string(), 
     newPassword: z.string().min(3).max(20).regex(/[^a-zA-Z0-9]/).regex(/[a-z]/),
-    otp:z.string().max(7)
+    
 })  
+
+export const forgotPasswordSchema = z.object({
+    email:z.string().email()
+})

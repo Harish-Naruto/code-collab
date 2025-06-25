@@ -4,7 +4,6 @@ export type User = {
     name:string;
     username:string;
     avatar_url?:string;
-    password:string;
 }
 export type authUser = {
     email:string,

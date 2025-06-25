@@ -9,6 +9,7 @@ import { supabase } from '../config/supabase';
 interface AuthRequest extends Request {
     user?:{
         id:string;
+        email:string;
     }
 }
 
@@ -25,7 +26,7 @@ export const protect = async(req:AuthRequest,res:Response,next:NextFunction)=>{
             throw new AppError("No jwt secret found ",StatusCodes.UNAUTHORIZED)
         }
 
-        const decoded = jwt.verify(token,jwt_secret) as {id:string}
+        const decoded = jwt.verify(token,jwt_secret) as {id:string,email:string}
         const userId = decoded.id 
 
         const {data:user, error} = await supabase

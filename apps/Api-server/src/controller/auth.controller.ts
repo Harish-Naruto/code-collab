@@ -9,8 +9,8 @@ import { otpStorage } from '../libs/opt.store';
 import { sendOTP } from '../utils/email';
 
 
-const generateToken = (id: string) => {
-    return jwt.sign({ id }, jwt_secret, {
+const generateToken = (id: string,email:String) => {
+    return jwt.sign({ id,email }, jwt_secret, {
         expiresIn: jwt_expiresIn as number
     });
 }
@@ -56,7 +56,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
             throw new Error(error.message);
         }
 
-        const token = generateToken(user.id);
+        const token = generateToken(user.id,user.email);
 
 
         res.status(StatusCodes.CREATED).json({
@@ -65,8 +65,8 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
                 user: {
                     id: user.id,
                     email: user.email,
-                    role: user.role,
-                    profile_data: user.profile_data
+                    name:user.name,
+                    username:user.username
                 },
                 token
             }
@@ -76,7 +76,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
         next(error);
     }
 
-}
+};
 
 export const forgotpassword = async (req: Request, res: Response, next: NextFunction) => {
     const { email } = req.body;
@@ -102,13 +102,33 @@ export const forgotpassword = async (req: Request, res: Response, next: NextFunc
     })
 };
 
+export const verifyOtp = async(req:Request,res:Response,next:NextFunction) =>{
+    const {email ,otp} = req.body;
+    const isValid = otpStorage.verify(email,otp);
+    if(!isValid){
+        throw new AppError("OTP is not valid",StatusCodes.UNAUTHORIZED);
+    }
+    const {data:user,error} = await supabase
+    .from('Users')
+    .select('*')
+    .eq('email',email)
+    .single()
+    if(error){
+        throw new Error(error.message);
+    }
+    const token = generateToken(user.id,email);
+    res.status(StatusCodes.OK).json({
+        message:'success',
+        data:{
+            token
+        }
+    })
+};
 
 export const resetpassword = async (req: Request, res: Response, next: NextFunction) => {
-    const { email, otp, newPassword } = req.body;
-    const isValid = otpStorage.verify(email, otp);
-    if (!isValid) {
-        throw new AppError("Invalid OTP", StatusCodes.BAD_REQUEST);
-    }
+    //token logic added
+    const { email, newPassword } = req.body;
+
     const {
         data: { users },
         error: listErr
@@ -135,7 +155,7 @@ export const resetpassword = async (req: Request, res: Response, next: NextFunct
         message: 'password updated'
     })
 
-}
+};
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -166,13 +186,16 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
             throw new AppError('User profile not found', StatusCodes.UNAUTHORIZED);
         }
 
-        const token = generateToken(user.id);
+        const token = generateToken(user.id,user.email);
 
         res.status(StatusCodes.OK).json({
             status: 'success',
             data: {
                 user: {
-                    email: user.email
+                    id:user.id,
+                    email: user.email,
+                    username:user.username,
+                    name:user.name
                 },
                 token
             }
@@ -182,25 +205,6 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         next(error);
     }
 };
-
-
-
-
-// export const loginWithGoogle = async (req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     const { data, error } = await supabase.auth.signInWithOAuth({
-//       provider: 'google',
-//     });
-
-//     if (error) throw error;
-
-//     res.json({
-//       url: data.url,
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
 
 export const verify = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -245,7 +249,7 @@ export const verify = async (req: Request, res: Response, next: NextFunction) =>
             }
         }
 
-        const generatedToken = generateToken(userId);
+        const generatedToken = generateToken(userId,email);
 
         res.status(StatusCodes.OK).json({
             status: 'success',
@@ -255,12 +259,5 @@ export const verify = async (req: Request, res: Response, next: NextFunction) =>
         next(error);
     }
 };
-
-
-
-
-
-
-
 
 
