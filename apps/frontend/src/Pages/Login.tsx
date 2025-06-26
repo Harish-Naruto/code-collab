@@ -75,7 +75,12 @@ const Login: React.FC = () => {
             Login
           </button>
         </form>
+
+
+        {/* design this Oauth butto and add github button  */}
         <button onClick={handleOauth}>login with google</button>
+
+        
 
         <p className="text-center text-sm">
           Don't have an account?{" "}
