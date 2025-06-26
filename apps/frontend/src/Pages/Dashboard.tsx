@@ -1,9 +1,15 @@
 import React from 'react';
+import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from "react-router-dom";
-import CodeCollabPage from './CodeCollabPage';
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
+
+  const {logout} = useAuth();
+  const handlelogout = () =>{
+    logout();
+    
+  }
 
   return (
     <div className="min-h-screen bg-black text-white px-6 py-8">
@@ -53,6 +59,8 @@ const Dashboard: React.FC = () => {
           <li>🧠 Edited file: authService.ts</li>
         </ul>
       </div>
+
+      <button onClick={handlelogout}>Logout</button>
     </div>
   );
 };

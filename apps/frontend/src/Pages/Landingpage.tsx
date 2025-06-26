@@ -1,7 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
 
-const LandingPage: React.FC = () => {
+import { Link} from 'react-router-dom';
+
+
+export default function LandingPage(){
+
+
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-4">
       <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500 mb-6 text-center">
@@ -28,4 +31,5 @@ const LandingPage: React.FC = () => {
   );
 };
 
-export default LandingPage;
+
+

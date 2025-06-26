@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
+import toast from 'react-hot-toast';
 
 const quotes = [
   "Resetting is the first step to rebooting greatness.",
@@ -9,48 +11,72 @@ const quotes = [
   "Forgotten today, remembered tomorrow."
 ];
 
-const generateOTP = (): string => {
-  return Math.floor(100000 + Math.random() * 900000).toString();
-};
 
-const ForgotPassword: React.FC = () => {
+const ForgotPasswordPage: React.FC = () => {
   const [step, setStep] = useState<'email' | 'otp' | 'reset'>('email');
   const [quote, setQuote] = useState('');
   const [email, setEmail] = useState('');
-  const [otpSent, setOtpSent] = useState('');
-  const [userOtp, setUserOtp] = useState('');
+  const [userOtp,setUserOtp] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const navigate = useNavigate();
+  const {ForgotPassword,verifyOtp,resetPassword} = useAuth();
 
   useEffect(() => {
     const random = quotes[Math.floor(Math.random() * quotes.length)];
     setQuote(random);
   }, []);
 
-  const handleSendOtp = (e: React.FormEvent) => {
+  const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    const generatedOtp = generateOTP();
-    setOtpSent(generatedOtp);
-    setStep('otp');
-    console.log(`Mock OTP sent to ${email}: ${generatedOtp}`);
-    // In real app, send OTP via email service here
+    try{
+      const result = await ForgotPassword(email);
+      if(result.success){
+        toast.success("OTP send successfully");
+        setStep('otp');
+      }else{
+        toast.error(result.message as string);
+      }
+    }catch(error){
+      toast.error("An unexpected error occurred. Please try again.")
+      console.error(" error:", error)
+    }
+    
+    
+  
   };
 
-  const handleVerifyOtp = (e: React.FormEvent) => {
+  const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (userOtp === otpSent) {
-      setStep('reset');
-    } else {
-      alert('Invalid OTP. Please try again.');
+    try{
+      const result = await verifyOtp(email,userOtp);
+      if(result.success){
+        toast.success("OTP verified");
+        setStep('reset');
+      }else{
+        toast.error(result.message as string);
+      }
+    }catch(error){
+      toast.error("An unexpected error occurred. Please try again.")
+      console.error(" error:", error)
     }
   };
 
-  const handleResetPassword = (e: React.FormEvent) => {
+  const handleResetPassword =async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(`Password reset for ${email}: ${newPassword}`);
-    // Here you'd call your password reset logic
-    navigate('/login');
+    try{
+      const result = await resetPassword(newPassword);
+      if(result.success){
+        toast.success("Password rest Successfully");
+        navigate('/login')
+      }else{
+        toast.error(result.message as string);
+      }
+    }catch(error){
+      toast.error("An unexpected error occurred. Please try again.")
+      console.error(" error:", error)
+    }
   };
+
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-black text-white overflow-hidden">
@@ -145,4 +171,4 @@ const ForgotPassword: React.FC = () => {
   );
 };
 
-export default ForgotPassword;
+export default ForgotPasswordPage;
