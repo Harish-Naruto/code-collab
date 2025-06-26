@@ -1,6 +1,13 @@
 import React from 'react';
+import { useAuth } from '../hooks/useAuth';
 
 const Dashboard: React.FC = () => {
+  const {logout} = useAuth();
+  const handlelogout = () =>{
+    logout();
+    
+  }
+
   return (
     <div className="min-h-screen bg-black text-white px-6 py-8">
       <h1 className="text-4xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-400">
@@ -38,6 +45,8 @@ const Dashboard: React.FC = () => {
           <li>🧠 Edited file: `authService.ts`</li>
         </ul>
       </div>
+
+      <button onClick={handlelogout}>Logout</button>
     </div>
   );
 };

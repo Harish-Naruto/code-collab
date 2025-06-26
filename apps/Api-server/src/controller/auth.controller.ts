@@ -16,9 +16,6 @@ const generateToken = (id: string,email:String) => {
     });
 }
 
-
-
-
 const generateOtp = () => {
     return Math.floor(100000 + Math.random() * 900000).toString();
 }
@@ -32,7 +29,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
             .eq('email', email)
             .single();
 
-        if (!existingUser) {
+        if (existingUser) {
             throw new AppError('User already exists', StatusCodes.BAD_REQUEST)
         }
 
@@ -170,7 +167,6 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     try {
         const { email, password } = req.body;
 
-        
         const { data: authUser, error: authError } = await supabase.auth.signInWithPassword({
             email,
             password
@@ -204,13 +200,14 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
                     id:user.id,
                     email: user.email,
                     username:user.username,
-                    name:user.name
+                    name:user.name,
+                    avatar_url:user.avatar_url
                 },
                 token
             }
         });
     } catch (error) {
-        console.error('Login error:', error);
+        
         next(error);
     }
 };
@@ -251,7 +248,10 @@ export const verify = async (req: Request, res: Response, next: NextFunction) =>
             // Create user
             const { error: insertError } = await supabase
                 .from('Users')
-                .insert([{ id: userId, email, username, name, avatar_url: avatarUrl }]);
+                .insert([{ id: userId, email, username, name, avatar_url: avatarUrl }])
+                .select()
+                .single();
+
 
             if (insertError) {
                 throw new Error(insertError.message);
@@ -262,7 +262,14 @@ export const verify = async (req: Request, res: Response, next: NextFunction) =>
 
         res.status(StatusCodes.OK).json({
             status: 'success',
-            token: generatedToken
+            token: generatedToken,
+            user:{
+                id:userId,
+                email,
+                name,
+                username,
+                avatar_url:avatarUrl
+            }
         });
     } catch (error) {
         next(error);

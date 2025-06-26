@@ -1,36 +1,8 @@
-import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { supabase } from '../config/supabase';
+
+import { Link} from 'react-router-dom';
+
 
 export default function LandingPage(){
-
-    const navigate = useNavigate();
-    useEffect(() => {
-      const handleCallback = async () => {
-        const { data } = await supabase.auth.getSession();
-  
-        if (data.session) {
-          const accessToken = data.session.access_token;
-  
-          const res = await fetch('http://localhost:3000/api/auth/verify', {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          });
-  
-          const result = await res.json();
-          localStorage.clear();
-          localStorage.setItem('token', result.token);
-          console.log('User from backend:', result.user);
-          navigate('/dashboard')
-
-        }
-      };
-  
-      handleCallback();
-    }, []);
-
 
 
   return (

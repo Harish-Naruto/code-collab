@@ -1,22 +1,34 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { supabase } from '../config/supabase';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { supabase } from "../config/supabase";
+import { useAuth } from "../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const navigate = useNavigate();
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const { login } = useAuth();
 
-  const handleOauth = async ()=>{
+  const handleOauth = async () => {
     await supabase.auth.signInWithOAuth({
-      provider:'google',
-    })
-  }
+      provider: "google",
+    });
+  };
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Logging in with:', email, password);
-    navigate('/dashboard');
+
+    try {
+      const result = await login(email, password);
+      if (result.success) {
+        toast.success("Login successfull");
+      } else {
+        toast.error(result.message as string);
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred. Please try again.");
+      console.error("Login error:", error);
+    }
   };
 
   return (
@@ -30,7 +42,7 @@ const Login: React.FC = () => {
       {/* 🌠 Optional Quote */}
       <div className="absolute top-10 text-center px-4 z-10">
         <p className="text-lg md:text-xl text-gray-400 italic animate-fade-in">
-          "Code is like humor. When you have to explain it, it’s bad."
+          "Code is like humor. When you have to explain it, it's bad."
         </p>
       </div>
 
@@ -66,13 +78,13 @@ const Login: React.FC = () => {
         <button onClick={handleOauth}>login with google</button>
 
         <p className="text-center text-sm">
-          Don't have an account?{' '}
+          Don't have an account?{" "}
           <Link to="/signup" className="text-blue-400 hover:underline">
             Sign up
           </Link>
         </p>
         <p className="text-center text-sm">
-          Forgot your password?{' '}
+          Forgot your password?{" "}
           <Link to="/forgot-password" className="text-blue-400 hover:underline">
             Reset it
           </Link>
