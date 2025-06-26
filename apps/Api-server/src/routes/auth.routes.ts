@@ -3,6 +3,7 @@ import { forgotPasswordSchema, resetPasswordSchema, userSchema } from '../utils/
 import { validate } from '../middleware/validate';
 import { forgotpassword, register, resetpassword, login ,verify, verifyOtp} from '../controller/auth.controller';
 import { protect } from '../middleware/authmiddleware';
+import { resetPasswordLimiter, verifyOtpLimiter } from '../utils/ratelimter';
 
 const router:express.Router = express.Router();
 
@@ -12,11 +13,11 @@ router.post('/register',validate(userSchema),register);
 
 router.post('/forgotPassword',validate(forgotPasswordSchema),forgotpassword);
 
-router.post('/resetPassword',validate(resetPasswordSchema),protect,resetpassword);
+router.post('/resetPassword',resetPasswordLimiter,validate(resetPasswordSchema),protect,resetpassword);
 
 router.post('/login', login);
 
-router.post('/verifyOtp',verifyOtp)
+router.post('/verifyOtp',verifyOtpLimiter,verifyOtp)
 
 router.post('/verify', verify);
 
