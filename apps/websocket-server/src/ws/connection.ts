@@ -35,7 +35,7 @@ export function handleConnection(ws:WebSocket,req:any){
             }
 
             if(data.type==='TYPING'){
-                await handleTyping(data.room,data.userId,data.typing??false);
+                await handleTyping(data.room,data.userId,data.typing||false);
             }
 
         }catch(err){

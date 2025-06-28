@@ -32,11 +32,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           const accessToken = session.access_token;
           api.defaults.headers.common["Authorization"] =`Bearer ${accessToken}`;
           const res = await api.post("/auth/verify");
-          const token = res.data.token;
+          const {token,user} = res.data.data;
+          setUser(user);
           api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
           localStorage.clear();
           localStorage.setItem("token", token);
-          setUser(res.data.user);
+          localStorage.setItem("user",JSON.stringify(user))
         } catch (err) {
           console.error("OAuth token exchange failed, ", err);
           toast.error("Login faild. Please try again");

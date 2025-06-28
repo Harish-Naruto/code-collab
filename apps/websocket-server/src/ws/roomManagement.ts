@@ -61,7 +61,7 @@ export async function handleTyping(room: string,userId: string,isTyping: boolean
     typing: isTyping,
     timestamp: Date.now(),
   };
-  await pub.publish("chat", JSON.stringify({ room, msg }));
+  await pub.publish("chat", JSON.stringify({ room, data:msg }));
 }
 
 export async function handleLeave(ws: WebSocket) {
