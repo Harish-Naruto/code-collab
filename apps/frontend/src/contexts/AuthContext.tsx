@@ -54,6 +54,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const response = await api.post("/auth/login", { email, password });
       const { token, user } = response.data.data;
       localStorage.setItem("token", token);
+      localStorage.setItem("user",JSON.stringify(user))
       setUser(user);
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       // if you want you can redirect using following line
@@ -73,6 +74,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const response = await api.post("/auth/register", {email:userData.email,username:userData.username,password:userData.password,name:userData.name});
       const { token, user } = response.data.data;
       localStorage.setItem("token", token);
+      localStorage.setItem("user",JSON.stringify(user))
       setUser(user);
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       // if you want you can redirect using following line
@@ -90,6 +92,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     localStorage.removeItem("token")
+    localStorage.removeItem("user");
     delete api.defaults.headers.common["Authorization"]
     setUser(null)
     navigate("/")
@@ -116,7 +119,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const response = await api.post("/auth/verifyOtp",{email,otp});
         const {token} = response.data.data;
         localStorage.setItem("token", token);
-        setUser(user);
         api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         return { success: true }
 

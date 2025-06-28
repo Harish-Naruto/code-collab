@@ -3,19 +3,16 @@ import type { ChatMessage } from "../types/chat";
 import type { AuthUser } from "../types/auth";
 import toast from "react-hot-toast";
 
-type UserInfo = {
-  username: string;
-  avatar_url: string;
-}
+
 
 export function useWebSocket(token: string, room: string, user: AuthUser) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [userMap, setUserMap] = useState<Map<string, UserInfo>>(new Map());
   const [typingUsers, setTypingUsers] = useState<Set<string>>(new Set());
+  const [Count,setCount] = useState<number>(0);
   const [isConnected, setIsConnected] = useState(false);
   const ws = useRef<WebSocket | null>(null);
 
-  // Cleanup function to close WebSocket
+
   const cleanup = useCallback(() => {
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
       ws.current.close();
@@ -26,19 +23,16 @@ export function useWebSocket(token: string, room: string, user: AuthUser) {
 
   useEffect(() => {
     if (!token || !room || !user.id) return;
-
-    // Clean up existing connection
     cleanup();
 
-    // Create new WebSocket connection
-    ws.current = new WebSocket(`ws://localhost:8080`);
+    
+    ws.current = new WebSocket(`ws://localhost:8080?token=${token}`);
 
     ws.current.onopen = () => {
       setIsConnected(true);
       ws.current?.send(JSON.stringify({
         type: "JOIN",
         room,
-        userId: user.id,
         username: user.username,
         avatar_url: user.avatar_url
       }));
@@ -50,51 +44,30 @@ export function useWebSocket(token: string, room: string, user: AuthUser) {
         
         switch (data.type) {
           case "MESSAGE":
-            // Handle nested message structure - extract from msg wrapper
-            
             setMessages((prev) => [...prev, data.msg || data]);
             break;
 
           case "HISTORY":
-            // Extract messages from msg wrapper and flatten the structure
-            
+  
             setMessages((data.messages || []).map((item: any) => item.msg || item));
             break;
 
           case "JOIN":
-            setUserMap((prev) => {
-              const newMap = new Map(prev);
-              const info: UserInfo = { 
-                username: data.username as string, 
-                avatar_url: data.avatar_url || "" 
-              };
-              newMap.set(data.userId, info);
-              
-              // Only show toast if it's not the current user joining
-              if (data.userId !== user.id) {
+              if (data.username !== user.username) {
                 toast.success(`${data.username} joined the chat`);
               }
-              
-              return newMap;
-            });
             break;
 
           case "LEAVE":
-            setUserMap((prev) => {
-              const username = prev.get(data.userId)?.username;
-              if (username && data.userId !== user.id) {
-                toast(`${username} left the chat`, { icon: "👋" });
+
+              if (data.username !== user.username) {
+                toast(`${data.username} left the chat`, { icon: "👋" });
               }
-              
-              const newMap = new Map(prev);
-              newMap.delete(data.userId);
-              return newMap;
-            });
+
             
-            // Remove from typing users if they were typing
             setTypingUsers((prev) => {
               const updated = new Set(prev);
-              updated.delete(data.userId);
+              updated.delete(data.username);
               return updated;
             });
             break;
@@ -103,12 +76,16 @@ export function useWebSocket(token: string, room: string, user: AuthUser) {
             setTypingUsers((prev) => {
               const updated = new Set(prev);
               if (data.typing) {
-                updated.add(data.userId);
+                updated.add(data.username);
               } else {
-                updated.delete(data.userId);
+                updated.delete(data.username);
               }
               return updated;
             });
+            break;
+          
+          case "COUNT":
+            setCount(data.count);
             break;
 
           default:
@@ -138,7 +115,8 @@ export function useWebSocket(token: string, room: string, user: AuthUser) {
       ws.current.send(JSON.stringify({
         type: "MESSAGE", 
         room,
-        userId: user.id,
+        username: user.username,
+        avatar_url:user.avatar_url,
         message: text
       }));
     } else {
@@ -151,7 +129,8 @@ export function useWebSocket(token: string, room: string, user: AuthUser) {
       ws.current.send(JSON.stringify({
         type: "TYPING",
         room,
-        userId: user.id,
+        username: user.username,
+        avatar_url:user.avatar_url,
         typing:typing
       }));
     }
@@ -159,10 +138,10 @@ export function useWebSocket(token: string, room: string, user: AuthUser) {
 
   return {
     messages,
+    Count,
     sendMessage,
     sendTyping,
     typingUsers,
-    userMap,
     isConnected
   };
 }

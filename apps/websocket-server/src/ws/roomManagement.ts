@@ -20,10 +20,11 @@ function getActiveSocket() {
   return activeSockets;
 }
 
-export async function handleJoin(ws: WebSocket, room: string, userId: string, username:string,avatar_url:string) {
-  activeSockets.add({ ws, room, userId });
-  await redisclient.sAdd(`room:${room}`, userId);
+export async function handleJoin(ws: WebSocket, room: string, username:string,avatar_url:string) {
+  activeSockets.add({ ws, room, username });
+  await redisclient.sAdd(`room:${room}`, username);
   const history = await redisclient.lRange(`history:${room}`, -20, -1);
+  const count  = await redisclient.sCard(`room:${room}`);
   const parsedHistory = (history || []).map((item) => JSON.parse(item));
   ws.send(
     JSON.stringify({
@@ -34,19 +35,25 @@ export async function handleJoin(ws: WebSocket, room: string, userId: string, us
 
   const joinmsg = {
     type: "JOIN",
-    userId: userId,
     username,
     avatar_url,
     timestamp: Date.now(),
   };
 
+  const countmsg = {
+    type:"COUNT",
+    count
+  }
+
   await pub.publish("chat", JSON.stringify({ room: room, data: joinmsg }));
+  await pub.publish("chat", JSON.stringify({ room: room, data: countmsg }));
 }
 
-export async function handleMessage(room: string, userId: string, text: string) {
+export async function handleMessage(room: string, username: string, avatar_url:string, text: string) {
   const msg = {
     type: "MESSAGE",
-    userId,
+    username,
+    avatar_url,
     message: text,
     timestamp: Date.now(),
   };
@@ -54,10 +61,11 @@ export async function handleMessage(room: string, userId: string, text: string) 
   await pub.publish("chat", JSON.stringify({ room, data: msg }));
 }
 
-export async function handleTyping(room: string,userId: string,isTyping: boolean) {
+export async function handleTyping(room: string,username: string,avatar_url:string,isTyping: boolean) {
   const msg = {
     type: "TYPING",
-    userId,
+    username,
+    avatar_url,
     typing: isTyping,
     timestamp: Date.now(),
   };
@@ -69,14 +77,29 @@ export async function handleLeave(ws: WebSocket) {
   if (!sock) {
     return;
   }
-  const { room, userId } = sock;
+  const { room, username } = sock;
   activeSockets.delete(sock);
-  await redisclient.sRem(`room:${room}`, userId);
+  await redisclient.sRem(`room:${room}`, username);
+  const count = await redisclient.sCard(`room:${room}`);
 
-  const leavemsg = {
-    type: "LEAVE",
-    userId,
-    timestamp: Date.now(),
-  };
-  await pub.publish("chat", JSON.stringify({ room, data: leavemsg }));
+  if(count>0){
+    const countmsg = {
+      type:"COUNT",
+      count
+    }
+    await pub.publish("chat",JSON.stringify({room,data:countmsg}));
+
+    const leavemsg = {
+      type: "LEAVE",
+      username,
+      timestamp: Date.now(),
+    };
+    await pub.publish("chat", JSON.stringify({ room, data: leavemsg }));
+  }else{
+    await redisclient.del(`room:${room}`)
+  }
+
+
+
+
 }

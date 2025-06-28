@@ -2,28 +2,23 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Send, Users, Circle } from 'lucide-react';
 import type { AuthUser } from '../types/auth';
 import { useWebSocket } from '../hooks/useWebsocket';
-// Main Chat Component
+
 export default function Chat() {
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Mock data - replace with your actual auth data
   const user: AuthUser = JSON.parse(localStorage.getItem('user') as string);
-  
   const token = localStorage.getItem('token') as string;
   const room = "general";
 
-  const { messages, sendMessage, sendTyping, typingUsers, userMap, isConnected } = useWebSocket(token, room, user);
+  const { messages, sendMessage, sendTyping, typingUsers, isConnected,Count } = useWebSocket(token, room, user);
 
-  // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Focus input on mount
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
@@ -79,8 +74,7 @@ export default function Chat() {
 
   const getTypingText = () => {
     const typingUsernames = Array.from(typingUsers)
-      .filter(userId => userId !== user.id)
-      .map(userId => userMap.get(userId)?.username)
+      .filter(username => username !== user.username)
       .filter(Boolean);
 
     if (typingUsernames.length === 0) return '';
@@ -104,16 +98,16 @@ export default function Chat() {
         </div>
         <div className="flex items-center space-x-2 text-gray-600">
           <Users className="w-5 h-5" />
-          <span className="text-sm">{userMap.size} online</span>
+          <span className="text-sm">{Count} online</span>
         </div>
       </div>
 
       {/* Messages Container */}
       <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
         {messages.map((message, index) => {
-          const isOwnMessage = message.userId === user.id;
-          const username = userMap.get(message.userId)?.username || 'Unknown User';
-          const avatar = userMap.get(message.userId)?.avatar_url;
+          const isOwnMessage = message.username === user.username;
+          const username = message.username || 'Unknown User';
+          const avatar = message.avatar_url;
 
           return (
             <div
