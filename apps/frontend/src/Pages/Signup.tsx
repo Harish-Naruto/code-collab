@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import type { User } from '../types/auth';
+import { useAuth } from '../hooks/useAuth';
+import toast from 'react-hot-toast';
 
 const quotes = [
   "Code never lies, comments sometimes do.",
@@ -13,17 +16,41 @@ const Signup: React.FC = () => {
   const [quote, setQuote] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+  const [name,setName] = useState('');
+  const [username,setUsername] = useState('');
+  const {register} = useAuth();
 
+  
   useEffect(() => {
     const random = quotes[Math.floor(Math.random() * quotes.length)];
     setQuote(random);
   }, []);
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Signing up with:', email, password);
-    navigate('/dashboard');
+    try{
+
+      const userData:User = {
+        email,
+        password,
+        name,
+        username
+      }
+      const result = await register(userData);
+      if (result.success) {
+        toast.success("Registration successful!")
+        
+      } else {
+        toast.error(result.message as string)
+      }
+    }catch(error){
+      toast.error("An unexpected error occurred. Please try again.")
+      console.error("Registration error:", error)
+    }
+
+
+    
+    
   };
 
   return (
@@ -52,12 +79,16 @@ const Signup: React.FC = () => {
             type="text"
             placeholder="Enter your name"
             className="w-full px-4 py-2 bg-black/70 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-pink-500"
+             value={name}
+            onChange={(e) => setName(e.target.value)}
             required
           />
           <input
             type="text"
             placeholder="Username"
             className="w-full px-4 py-2 bg-black/70 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-pink-500"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
           <input

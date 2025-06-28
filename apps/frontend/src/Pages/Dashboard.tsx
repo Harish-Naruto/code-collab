@@ -1,6 +1,16 @@
 import React from 'react';
+import { useAuth } from '../hooks/useAuth';
+import { useNavigate } from "react-router-dom";
 
 const Dashboard: React.FC = () => {
+  const navigate = useNavigate();
+
+  const {logout} = useAuth();
+  const handlelogout = () =>{
+    logout();
+    
+  }
+
   return (
     <div className="min-h-screen bg-black text-white px-6 py-8">
       <h1 className="text-4xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-400">
@@ -25,6 +35,17 @@ const Dashboard: React.FC = () => {
           <h2 className="text-xl font-semibold mb-2 text-pink-400">Projects</h2>
           <p className="text-gray-400">Organize your collaborative projects and track progress.</p>
         </div>
+
+        {/* Card 4: CodeCollabPage */}
+        <div
+          onClick={() => navigate("/CodeCollabPage")}
+          className="cursor-pointer bg-[#1e1e1e] border border-gray-700 p-6 rounded-xl shadow-md hover:shadow-lg transition"
+        >
+          <h2 className="text-xl font-semibold mb-2 text-pink-400">CodeTogether</h2>
+          <p className="text-gray-400">
+            Code together in real-time, track edits, and build projects collaboratively.
+          </p>
+        </div>
       </div>
 
       {/* Additional section */}
@@ -35,9 +56,11 @@ const Dashboard: React.FC = () => {
         <ul className="text-gray-300 space-y-2">
           <li>✅ Joined Room: "Bug Fixing Sprint"</li>
           <li>🎥 Started a video call with Alice</li>
-          <li>🧠 Edited file: `authService.ts`</li>
+          <li>🧠 Edited file: authService.ts</li>
         </ul>
       </div>
+
+      <button onClick={handlelogout}>Logout</button>
     </div>
   );
 };
