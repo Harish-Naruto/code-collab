@@ -2,7 +2,8 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { errorHandler } from './utils/errorhandler';
-import authRoutes from './routes/auth.routes'
+import authRoutes from './routes/auth.routes';
+import userRoutes from './routes/user.routes'; 
 import { StatusCodes } from 'http-status-codes';
 import { port } from './config/config';
 import { supabase } from './config/supabase';
@@ -24,6 +25,7 @@ app.get('/health', (req, res) => {
 
 
 app.use('/api/auth',authRoutes);
+app.use('/api/user',userRoutes);
 
 
 

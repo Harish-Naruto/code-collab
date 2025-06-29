@@ -29,3 +29,14 @@ export const validate = (schema: z.ZodSchema) => {
     }
   };
 };
+
+export const updateProfileSchema = z
+  .object({
+    email: z.string().email().optional(),
+    username: z.string().min(3).max(20).optional(),
+    name: z.string().max(30).optional(),
+    avatar_url: z.string().url().optional()
+  })
+  .refine(data => Object.keys(data).length > 0, {
+    message: 'Provide at least one field to update'
+  });
