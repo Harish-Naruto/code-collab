@@ -1,13 +1,12 @@
 import express, { Router } from 'express'
-import { forgotPasswordSchema, resetPasswordSchema, userSchema } from '../utils/validator'
 import { validate, updateProfileSchema } from '../middleware/validate';
-import { logout, getUserProfile, updateUserProfile, deleteUserProfile} from '../controller/auth.controller';
+import { getUserProfile, updateUserProfile, deleteUserProfile} from '../controller/user.controller';
 import { protect } from '../middleware/authmiddleware';
-import { resetPasswordLimiter, verifyOtpLimiter } from '../utils/ratelimter';
+
 
 const router:express.Router = express.Router();
 
-router.post('/logout', protect, logout); 
+// User profile management endpoints
 
 router.get('/getprofile', protect, getUserProfile);  // /me
 

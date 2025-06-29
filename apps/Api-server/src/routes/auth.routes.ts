@@ -7,7 +7,7 @@ import { resetPasswordLimiter, verifyOtpLimiter } from '../utils/ratelimter';
 
 const router:express.Router = express.Router();
 
-
+// Authentication endpoints
 
 router.post('/register',validate(userSchema),register);
 
