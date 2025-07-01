@@ -1,12 +1,16 @@
-import * as yjs from 'yjs';
-import { WebsocketProvider } from 'y-websocket';
 
-const doc = new yjs.Doc();
+import http from 'http';
+import { WebSocketServer } from 'ws';
+import { setupWSConnection } from './utils/setupWsConnection';
 
-const wsProvider = new WebsocketProvider('ws://localhost:1234', 'my-roomname', doc);
+const server = http.createServer();
+const wss = new WebSocketServer({ server });
 
-console.log('Yjs WebSocket provider started on ws://localhost:1234');
+wss.on('connection', (ws, req) => {
+  setupWSConnection(ws, req);
+});
 
-wsProvider.on('status', (event) => {
-  console.log(`WebSocket status: ${event.status}`);
+const PORT = 1234;
+server.listen(PORT, () => {
+  console.log(`WebSocket server running at ws://localhost:${PORT}`);
 });

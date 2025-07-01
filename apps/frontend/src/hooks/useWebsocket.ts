@@ -23,7 +23,7 @@ export function useWebSocket(token: string, room: string, user: AuthUser) {
 
   useEffect(() => {
     if (!token || !room || !user.id) return;
-    cleanup();
+    // cleanup();
 
     
     ws.current = new WebSocket(`ws://localhost:8080?token=${token}`);
@@ -107,8 +107,8 @@ export function useWebSocket(token: string, room: string, user: AuthUser) {
     };
 
     // Cleanup on unmount or dependency change
-    return cleanup;
-  }, [token, room, user.id, user.username, user.avatar_url, cleanup]);
+    
+  }, [token, room, user.id, user.username, user.avatar_url]);
 
   const sendMessage = useCallback((text: string) => {
     if (ws.current?.readyState === WebSocket.OPEN) {

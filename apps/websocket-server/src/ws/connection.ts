@@ -25,6 +25,7 @@ export function handleConnection(ws:WebSocket,req:any){
 
             if(data.type==='JOIN'){
                 await handleJoin(ws,data.room,data.username,data.avatar_url);
+                console.log("user joined")
             }
 
             if(data.type==='MESSAGE'){

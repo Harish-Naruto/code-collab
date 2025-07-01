@@ -2,18 +2,20 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import Sidebar from "../components/Sidebar"
-import Editor from "../components/Editor"
+// import Sidebar from "../components/Sidebar"
+// import Editor from "../components/Editor"
 import Chat from "../components/Chat"
 import { Sun, Moon, TimerReset, Timer } from "lucide-react"
+import CollaborativeEditor from "../components/CodeEditor"
+import { useAuth } from "../hooks/useAuth"
 
 
 const CodeCollabPage: React.FC = () => {
-  const [selectedFile, setSelectedFile] = useState("Editor.tsx")
-  const [editorContent, setEditorContent] = useState("// Start Your Code...")
   const [isDarkMode, setIsDarkMode] = useState(true)
   const [seconds, setSeconds] = useState(0)
   const [isRunning, setIsRunning] = useState(true)
+  const {user} = useAuth();
+  const username = user?.username as string;
 
   const toggleTheme = () => setIsDarkMode(!isDarkMode)
 
@@ -97,11 +99,9 @@ const CodeCollabPage: React.FC = () => {
 
       {/* Main Content */}
       <div className="flex flex-1">
-        <Sidebar selectedFile={selectedFile} onFileSelect={setSelectedFile} />
-        <Editor
-          content={editorContent}
-          onChange={setEditorContent}
-          fileName={selectedFile}
+        <CollaborativeEditor
+        roomId="123"
+        userName={username}
         />
         <Chat />
       </div>
