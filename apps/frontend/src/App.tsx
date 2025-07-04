@@ -10,6 +10,9 @@ import { Toaster } from "react-hot-toast";
 import CreateRoom from './Pages/CreateRoom';
 import JoinRoom from './Pages/JoinRoom';
 import CodeCollabPage from "./Pages/CodeCollabPage";
+import ProfilePage from "./Pages/profile-page";
+
+import Navbar from "./Pages/navbar";
 
 
 const App: React.FC = () => {
@@ -26,6 +29,9 @@ const App: React.FC = () => {
         <Route path="/create-room" element={<CreateRoom />} />
         <Route path="/join-room" element={<JoinRoom />} />
         <Route path="/CodeCollabPage" element={<CodeCollabPage />} />
+        <Route path="/profile-page" element={<ProfilePage />} />
+
+          <Route path="/navbar" element={<Navbar />} />
 
       </Routes>
         <Toaster position="top-center" reverseOrder={false} />

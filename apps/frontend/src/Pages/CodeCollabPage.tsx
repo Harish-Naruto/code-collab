@@ -18,7 +18,7 @@ const CodeCollabPage: React.FC = () => {
   const toggleTheme = () => setIsDarkMode(!isDarkMode)
 
   useEffect(() => {
-    let timer: number
+    let timer: ReturnType<typeof setInterval>
     if (isRunning) {
       timer = setInterval(() => setSeconds((prev) => prev + 1), 1000)
     }
