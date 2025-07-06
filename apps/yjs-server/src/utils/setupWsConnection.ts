@@ -91,20 +91,7 @@ function getYDoc(room: string) {
   if (!docs.has(room)) {
     const doc = new Y.Doc();
     const awareness = new Awareness(doc);
-    const clients = new Set<WebSocket>();
-    
-    // Add awareness change logging for debugging
-    //@ts-ignore
-    awareness.on('change', ({ added, updated, removed }) => {
-      console.log(`Awareness change in room ${room}:`, {
-        added: added.length,
-        updated: updated.length,
-        removed: removed.length,
-        totalStates: awareness.getStates().size
-      });
-  
-    });
-    
+    const clients = new Set<WebSocket>();    
     docs.set(room, { doc, awareness, clients });
   }
   return docs.get(room)!;

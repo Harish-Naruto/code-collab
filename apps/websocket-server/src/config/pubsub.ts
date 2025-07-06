@@ -1,8 +1,12 @@
 import { createClient, RedisClientType } from "redis";
 
- const pub:RedisClientType = createClient();
+ const pub:RedisClientType = createClient({
+    url: 'redis://redis:6379'
+ });
 
- const sub:RedisClientType= createClient();
+ const sub:RedisClientType= createClient({
+    url: 'redis://redis:6379'
+ });
 
 (async () => {
   try {
