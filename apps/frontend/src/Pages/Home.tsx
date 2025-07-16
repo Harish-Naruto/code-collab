@@ -3,7 +3,7 @@ import { Button } from "./ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
 import Badge from "./ui/badge"
 import { Input } from "./ui/input"
-import '../app.css';
+import '../App.css';
 import Button1 from './ui/button1';
 import { useNavigate } from "react-router-dom";
 import Footer from "./Footer"

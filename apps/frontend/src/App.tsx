@@ -6,14 +6,12 @@ import Dashboard from './Pages/Dashboard';
 import ForgotPassword from './Pages/ForgotPassword';
 import Home from './Pages/Home';
 import LandingPage from './Pages/Home'; // Looks like a duplicate. Fix if needed.
-import ForgotPasswordPage from './Pages/ForgotPassword';
 import CreateRoom from './Pages/CreateRoom';
 import JoinRoom from './Pages/JoinRoom';
 import CodeCollabPage from './Pages/CodeCollabPage';
 import { AuthProvider } from './contexts/AuthContext';
 import { Toaster } from 'react-hot-toast';
 import Error from './Pages/ui/error'; // Assuming this is a styled component for error handling 
-import Navbar from './Pages/navbar';
 
 
 
