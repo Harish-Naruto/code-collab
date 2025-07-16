@@ -9,8 +9,8 @@ import ForgotPasswordPage from "./Pages/ForgotPassword";
 import CreateRoom from "./Pages/CreateRoom";
 import JoinRoom from "./Pages/JoinRoom";
 import CodeCollabPage from "./Pages/CodeCollabPage";
-import Navbar from "./components/Navbar/Navbar";
-import ProfilePage from "./components/Profile-page/Profile-page";
+import Navbar from "./Pages/Navbar";
+import Profile from "./Pages/Profile";
 
 import { AuthProvider } from "./contexts/AuthContext";
 import { Toaster } from "react-hot-toast";
@@ -19,13 +19,13 @@ const App: React.FC = () => {
   return (
     <Router>
       <AuthProvider>
+        <Navbar />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/navbar" element={<Navbar />} />
-          <Route path="/profile-page" element={<ProfilePage />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/create-room" element={<CreateRoom />} />
           <Route path="/join-room" element={<JoinRoom />} />
