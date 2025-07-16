@@ -96,12 +96,6 @@ importers:
       axios:
         specifier: ^1.10.0
         version: 1.10.0
-      lucide-react:
-        specifier: ^0.523.0
-        version: 0.523.0(react@19.1.0)
-      monaco-editor:
-        specifier: ^0.52.2
-        version: 0.52.2
       framer-motion:
         specifier: ^12.23.3
         version: 12.23.3(@emotion/is-prop-valid@1.2.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -5853,7 +5847,6 @@ snapshots:
   node-releases@2.0.19: {}
 
   nodemailer@7.0.3: {}
-
 
   normalize-package-data@2.5.0:
     dependencies:
