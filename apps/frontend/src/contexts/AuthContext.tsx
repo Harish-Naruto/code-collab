@@ -36,6 +36,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
           localStorage.clear();
           localStorage.setItem("token", token);
+          localStorage.setItem("user", JSON.stringify(res.data.user));
+          // const resp = localstorage.get("user");
+          // const userdata = JSON.parse(resp);
           setUser(res.data.user);
         } catch (err) {
           console.error("OAuth token exchange failed, ", err);

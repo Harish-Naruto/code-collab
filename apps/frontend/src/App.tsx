@@ -1,18 +1,20 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./Pages/Login";
-import Signup from "./Pages/Signup";
-import Dashboard from "./Pages/Dashboard";
-// import LandingPage from "./Pages/Landingpage";
-import ForgotPasswordPage from "./Pages/ForgotPassword";
-import { AuthProvider } from "./contexts/AuthContext";
-import { Toaster } from "react-hot-toast";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './Pages/Login';
+import Signup from './Pages/Signup';
+import Dashboard from './Pages/Dashboard';
+import ForgotPassword from './Pages/ForgotPassword';
+import Home from './Pages/Home';
+import LandingPage from './Pages/Home'; // Looks like a duplicate. Fix if needed.
+import ForgotPasswordPage from './Pages/ForgotPassword';
 import CreateRoom from './Pages/CreateRoom';
 import JoinRoom from './Pages/JoinRoom';
-import CodeCollabPage from "./Pages/CodeCollabPage";
+import CodeCollabPage from './Pages/CodeCollabPage';
+import { AuthProvider } from './contexts/AuthContext';
+import { Toaster } from 'react-hot-toast';
+import Error from './Pages/ui/error'; // Assuming this is a styled component for error handling 
+import Navbar from './Pages/navbar';
 
-import Home from './Pages/Home';
-import LandingPage from './Pages/Home';
 
 
 const App: React.FC = () => {
@@ -24,14 +26,14 @@ const App: React.FC = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-  
-        <Route path="/create-room" element={<CreateRoom />} />
-        <Route path="/join-room" element={<JoinRoom />} />
-        <Route path="/CodeCollabPage" element={<CodeCollabPage />} />
-
-        <Route path="/home" element={<Home />} />
-      </Routes>
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/create-room" element={<CreateRoom />} />
+          <Route path="/join-room" element={<JoinRoom />} />
+          {/* <Route path="/error" element={<Error />} /> */}
+           <Route path="*" element={<Error />} />
+          <Route path="/CodeCollabPage" element={<CodeCollabPage />} />
+        </Routes>
         <Toaster position="top-center" reverseOrder={false} />
       </AuthProvider>
     </Router>

@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Button1 = () => {
+const Button1 = ({ onClick }) => {
   return (
     <StyledWrapper>
-      <button className="animated-button">
+      <button className="animated-button" onClick={onClick}>
         <svg viewBox="0 0 24 24" className="arr-2" xmlns="http://www.w3.org/2000/svg">
           <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
         </svg>
@@ -16,7 +16,8 @@ const Button1 = () => {
       </button>
     </StyledWrapper>
   );
-}
+};
+
 
 const StyledWrapper = styled.div`
   .animated-button {
@@ -98,7 +99,7 @@ const StyledWrapper = styled.div`
 
   .animated-button:active {
     scale: 0.95;
-    box-shadow: 0 0 0 4px greenyellow;
+    box-shadow: 0 0 0 4px purple;
   }
 
   .animated-button:hover .circle {
