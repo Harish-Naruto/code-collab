@@ -7,7 +7,6 @@ import Editor from "../components/Editor"
 import Chat from "../components/Chat"
 import { Sun, Moon, TimerReset, Timer } from "lucide-react"
 
-
 const CodeCollabPage: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState("Editor.tsx")
   const [editorContent, setEditorContent] = useState("// Start Your Code...")

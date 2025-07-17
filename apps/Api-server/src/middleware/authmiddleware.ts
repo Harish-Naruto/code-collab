@@ -5,7 +5,7 @@ import { AppError } from '../utils/errorhandler';
 import { StatusCodes } from 'http-status-codes';
 import { supabase } from '../config/supabase';
 import { AuthRequest } from '../types/types';
-;
+
 
 
 

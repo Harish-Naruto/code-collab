@@ -20,19 +20,17 @@ const App: React.FC = () => {
   return (
     <Router>
       <AuthProvider>
+        <Navbar />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/create-room" element={<CreateRoom />} />
           <Route path="/join-room" element={<JoinRoom />} />
-          {/* <Route path="/error" element={<Error />} /> */}
-           <Route path="*" element={<Error />} />
-           <Route path="/loader" element={<Loader/>} />
-          <Route path="/CodeCollabPage" element={<CodeCollabPage />} />
+          <Route path="/code-collab-page" element={<CodeCollabPage />} />
         </Routes>
         <Toaster position="top-center" reverseOrder={false} />
       </AuthProvider>
