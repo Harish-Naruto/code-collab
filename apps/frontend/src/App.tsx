@@ -12,6 +12,7 @@ import CodeCollabPage from './Pages/CodeCollabPage';
 import { AuthProvider } from './contexts/AuthContext';
 import { Toaster } from 'react-hot-toast';
 import Error from './Pages/ui/error'; // Assuming this is a styled component for error handling 
+import Loader from './blocks/Loader';
 
 
 
@@ -30,6 +31,7 @@ const App: React.FC = () => {
           <Route path="/join-room" element={<JoinRoom />} />
           {/* <Route path="/error" element={<Error />} /> */}
            <Route path="*" element={<Error />} />
+           <Route path="/loader" element={<Loader/>} />
           <Route path="/CodeCollabPage" element={<CodeCollabPage />} />
         </Routes>
         <Toaster position="top-center" reverseOrder={false} />
