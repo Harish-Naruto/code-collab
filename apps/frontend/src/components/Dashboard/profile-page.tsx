@@ -1,10 +1,21 @@
 import type React from "react"
+import DOMPurify from "dompurify"
 import { useState, useEffect } from "react"
 import { ProfileCompletion } from "./profile-completion"
 import { useAuth } from "../../hooks/useAuth"
 export function ProfilePage() {
-  const { user, loading: authLoading, updateProfile } = useAuth()
-  const [loading, setLoading] = useState(false)
+    const sanitizeUrl = (url: string | null): string | null => {
+    if (!url) return null;
+    try {
+      return DOMPurify.sanitize(url, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
+    } catch {
+      return null;
+    }
+  }
+
+  const { user, updateProfile } = useAuth()
+  
+  const [loading, setLoading] = useState(true)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [formData, setFormData] = useState({
@@ -26,6 +37,7 @@ export function ProfilePage() {
         linkedinUrl: user.linkedinUrl || "",
         avatar_url: user.avatar_url || "",
       })
+      setLoading(false);
     }
     console.log(user);
   }, [user])
@@ -104,7 +116,7 @@ export function ProfilePage() {
     document.getElementById("avatar-upload")?.click()
   }
 
-  if (authLoading) {
+  if (loading) {
     return (
       <div className="bg-gray-900/50 border border-purple-500/20 rounded-lg p-6 backdrop-blur-sm">
         <div className="animate-pulse space-y-4">
@@ -148,7 +160,7 @@ export function ProfilePage() {
             <div className="flex items-start gap-6">
               <div className="relative">
                 <img src={
-                  selectedImage || formData.avatar_url || user.avatar_url || "/placeholder.svg?height=50&width=50"
+                  sanitizeUrl(selectedImage) || sanitizeUrl(formData.avatar_url) || user.avatar_url || "/placeholder.svg?height=50&width=50"
                 }
                 alt={user.name || "User"}
                 className="w-20 h-20 rounded-full border-2 border-purple-500/30 object-cover"

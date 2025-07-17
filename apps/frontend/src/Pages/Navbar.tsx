@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import {
   Code2,
@@ -11,9 +9,9 @@ import {
   Info,
   Users,
   Settings,
-  LogOut
+  LogOut,
 } from "lucide-react"
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
 
 const navigationItems = [
@@ -38,16 +36,16 @@ export default function Navbar() {
       <div className="fixed top-4 right-4 z-50 flex space-x-3">
         {!user ? (
           <>
-            <Link to="/login">
+            <NavLink to="/login">
               <button className="h-9 px-4 rounded-full flex items-center justify-center text-white bg-gradient-to-br from-purple-600 to-blue-500 shadow-lg hover:scale-105 transition-all ring-2 ring-purple-500/20 text-sm font-medium">
                 Log In
               </button>
-            </Link>
-            <Link to="/signup">
+            </NavLink>
+            <NavLink to="/signup">
               <button className="h-9 px-4 rounded-full flex items-center justify-center text-white bg-gradient-to-br from-purple-600 to-blue-500 shadow-lg hover:scale-105 transition-all ring-2 ring-purple-500/20 text-sm font-medium">
                 Sign Up
               </button>
-            </Link>
+            </NavLink>
           </>
         ) : (
           <div className="relative">
@@ -66,20 +64,20 @@ export default function Navbar() {
                 </div>
 
                 <div className="flex flex-col text-sm">
-                  <Link
+                  <NavLink
                     to="/profile"
                     className="px-4 py-2 hover:bg-gray-800 transition flex items-center space-x-2"
                   >
                     <User className="h-4 w-4" />
                     <span>Profile</span>
-                  </Link>
-                  <Link
+                  </NavLink>
+                  <NavLink
                     to="/settings"
                     className="px-4 py-2 hover:bg-gray-800 transition flex items-center space-x-2"
                   >
                     <Settings className="h-4 w-4" />
                     <span>Settings</span>
-                  </Link>
+                  </NavLink>
                 </div>
 
                 <button
@@ -108,14 +106,20 @@ export default function Navbar() {
 
           <div className="hidden md:flex items-center space-x-2">
             {navigationItems.map((item) => (
-              <Link
+              <NavLink
                 key={item.name}
                 to={item.to}
-                className="flex items-center space-x-2 px-5 py-2.5 rounded-lg text-sm font-medium text-gray-300 hover:bg-purple-500/10 border border-transparent hover:border-purple-500/20 transition"
+                className={({ isActive }) =>
+                  `flex items-center space-x-2 px-5 py-2.5 rounded-lg text-sm font-medium ${
+                    isActive
+                      ? "text-white bg-purple-600/30 border border-purple-500/30"
+                      : "text-gray-300 hover:bg-purple-500/10 border border-transparent hover:border-purple-500/20"
+                  } transition`
+                }
               >
                 <item.icon className="h-4 w-4" />
                 <span>{item.name}</span>
-              </Link>
+              </NavLink>
             ))}
           </div>
 
@@ -141,15 +145,21 @@ export default function Navbar() {
 
                   <div className="flex flex-col space-y-2">
                     {navigationItems.map((item) => (
-                      <Link
+                      <NavLink
                         key={item.name}
                         to={item.to}
                         onClick={() => setIsOpen(false)}
-                        className="flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-300 hover:bg-purple-500/10 border border-transparent hover:border-purple-500/20 transition"
+                        className={({ isActive }) =>
+                          `flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium ${
+                            isActive
+                              ? "text-white bg-purple-600/30 border border-purple-500/30"
+                              : "text-gray-300 hover:bg-purple-500/10 border border-transparent hover:border-purple-500/20"
+                          } transition`
+                        }
                       >
                         <item.icon className="h-5 w-5" />
                         <span>{item.name}</span>
-                      </Link>
+                      </NavLink>
                     ))}
                   </div>
                 </div>
