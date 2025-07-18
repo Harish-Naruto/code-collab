@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './Pages/Login';
 import Signup from './Pages/Signup';
 import Dashboard from './Pages/Dashboard';
-import ForgotPassword from './Pages/ForgotPassword';
+import ForgotPasswordPage from './Pages/ForgotPassword';
 import Home from './Pages/Home';
 import LandingPage from './Pages/Home'; // Looks like a duplicate. Fix if needed.
 import CreateRoom from './Pages/CreateRoom';
@@ -13,6 +13,8 @@ import { AuthProvider } from './contexts/AuthContext';
 import { Toaster } from 'react-hot-toast';
 import Error from './Pages/ui/error'; // Assuming this is a styled component for error handling 
 import Loader from './blocks/Loader';
+import Navbar from './Pages/Navbar';
+import ProfDashboard from './Pages/Profile';
 
 
 
@@ -26,11 +28,12 @@ const App: React.FC = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile />} />
+
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/create-room" element={<CreateRoom />} />
           <Route path="/join-room" element={<JoinRoom />} />
           <Route path="/code-collab-page" element={<CodeCollabPage />} />
+          <Route path='/profile' element={<ProfDashboard/>} />
         </Routes>
         <Toaster position="top-center" reverseOrder={false} />
       </AuthProvider>

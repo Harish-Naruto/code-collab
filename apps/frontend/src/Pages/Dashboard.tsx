@@ -7,7 +7,7 @@ import  '../App.css';
 import  Button1  from './ui/button1';
 import { useNavigate } from "react-router-dom";
 import Footer from "./Footer"
-import Navbar from "./navbar"
+import Navbar from "./Navbar"
 
 import {
   Code,

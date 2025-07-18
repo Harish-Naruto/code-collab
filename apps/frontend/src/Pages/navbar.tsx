@@ -16,9 +16,9 @@ import { useAuth } from "../hooks/useAuth"
 
 const navigationItems = [
   { name: "Home", to: "/", icon: Home },
-  { name: "Dashboard", to: "/dashboard", icon: LayoutDashboard },
-  { name: "Compiler", to: "/compiler", icon: Terminal },
-  { name: "Rooms", to: "/rooms", icon: Users },
+  // { name: "Dashboard", to: "/dashboard", icon: LayoutDashboard },
+  { name: "Compiler", to: "/code-collab-page", icon: Terminal },
+  { name: "Rooms", to: "/create-room", icon: Users },
   { name: "About", to: "/about", icon: Info },
 ]
 

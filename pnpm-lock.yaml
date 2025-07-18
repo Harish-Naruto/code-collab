@@ -99,6 +99,9 @@ importers:
       axios:
         specifier: ^1.10.0
         version: 1.10.0
+      dompurify:
+        specifier: ^3.2.6
+        version: 3.2.6
       framer-motion:
         specifier: ^12.23.3
         version: 12.23.3(@emotion/is-prop-valid@1.2.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)

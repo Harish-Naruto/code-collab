@@ -2,7 +2,7 @@ import { ProfilePage } from "../components/Dashboard/profile-page";
 import { MyProjects } from "../components/Dashboard/my-projects";
 import { useAuth } from "../hooks/useAuth";
 
-export default function Dashboard() {
+export default function ProfDashboard() {
   const { user} = useAuth();
 
   return (
