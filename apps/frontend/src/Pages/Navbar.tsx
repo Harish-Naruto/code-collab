@@ -66,6 +66,7 @@ export default function Navbar() {
                 <div className="flex flex-col text-sm">
                   <NavLink
                     to="/profile"
+                    onClick={() => setDropdownOpen(false)}
                     className="px-4 py-2 hover:bg-gray-800 transition flex items-center space-x-2"
                   >
                     <User className="h-4 w-4" />
@@ -73,6 +74,7 @@ export default function Navbar() {
                   </NavLink>
                   <NavLink
                     to="/settings"
+                    onClick={() => setDropdownOpen(false)}
                     className="px-4 py-2 hover:bg-gray-800 transition flex items-center space-x-2"
                   >
                     <Settings className="h-4 w-4" />
