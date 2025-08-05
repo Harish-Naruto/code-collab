@@ -1,14 +1,12 @@
-import { useState } from "react"
+import { useState,useEffect, useRef } from "react"
 import {
   Code2,
   Menu,
   User,
   Home,
-  LayoutDashboard,
   Terminal,
   Info,
   Users,
-  Settings,
   LogOut,
 } from "lucide-react"
 import { NavLink } from "react-router-dom"
@@ -16,9 +14,8 @@ import { useAuth } from "../hooks/useAuth"
 
 const navigationItems = [
   { name: "Home", to: "/", icon: Home },
-  { name: "Dashboard", to: "/dashboard", icon: LayoutDashboard },
-  { name: "Compiler", to: "/compiler", icon: Terminal },
-  { name: "Rooms", to: "/rooms", icon: Users },
+  { name: "Compiler", to: "/code-collab-page", icon: Terminal, requiresAuth: true },
+  { name: "Rooms", to: "/create-room", icon: Users, requiresAuth: true },
   { name: "About", to: "/about", icon: Info },
 ]
 
@@ -30,6 +27,31 @@ export default function Navbar() {
   const handleLogout = () => {
     logout()
   }
+
+  const dropdownRef=useRef<HTMLDivElement>(null);
+
+    // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setDropdownOpen(false)
+      }
+    }
+
+    if (dropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside)
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [dropdownOpen])
+
 
   return (
     <div>
@@ -57,7 +79,7 @@ export default function Navbar() {
             </button>
 
             {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-72 bg-[#1f1f1f] text-white rounded-xl shadow-lg border border-gray-800 z-50">
+              <div ref={dropdownRef}  className="absolute right-0 mt-2 w-72 bg-[#1f1f1f] text-white rounded-xl shadow-lg border border-gray-800 z-50">
                 <div className="p-4 border-b border-gray-700">
                   <p className="text-sm font-semibold">{user.name}</p>
                   <p className="text-xs text-gray-400">{user.email}</p>
@@ -71,13 +93,7 @@ export default function Navbar() {
                     <User className="h-4 w-4" />
                     <span>Profile</span>
                   </NavLink>
-                  <NavLink
-                    to="/settings"
-                    className="px-4 py-2 hover:bg-gray-800 transition flex items-center space-x-2"
-                  >
-                    <Settings className="h-4 w-4" />
-                    <span>Settings</span>
-                  </NavLink>
+                  
                 </div>
 
                 <button
@@ -95,6 +111,7 @@ export default function Navbar() {
 
       <nav className="sticky top-0 z-40 w-full border-b backdrop-blur bg-[#121212]/95 border-gray-800">
         <div className="flex h-16 items-center justify-center px-4 w-full relative">
+          {/* Left Logo */}
           <div className="absolute left-4 flex items-center space-x-3 group">
             <div className="p-3 rounded-xl bg-gradient-to-br from-purple-600 to-blue-500 shadow-lg transition-transform duration-300 group-hover:scale-110">
               <Code2 className="h-7 w-7 text-white" />
@@ -104,11 +121,18 @@ export default function Navbar() {
             </span>
           </div>
 
+          {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-2">
             {navigationItems.map((item) => (
               <NavLink
                 key={item.name}
-                to={item.to}
+                to={item.requiresAuth && !user ? "#" : item.to}
+                onClick={(e) => {
+                  if (item.requiresAuth && !user) {
+                    e.preventDefault()
+                    alert("Please log in to access this page.")
+                  }
+                }}
                 className={({ isActive }) =>
                   `flex items-center space-x-2 px-5 py-2.5 rounded-lg text-sm font-medium ${
                     isActive
@@ -123,6 +147,7 @@ export default function Navbar() {
             ))}
           </div>
 
+          {/* Mobile Menu Toggle */}
           <div className="md:hidden absolute right-4">
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -131,6 +156,7 @@ export default function Navbar() {
               <Menu className="h-6 w-6" />
             </button>
 
+            {/* Mobile Dropdown */}
             {isOpen && (
               <div className="absolute top-14 right-0 w-72 border border-gray-800 bg-[#121212]/95 rounded-lg shadow-xl z-50">
                 <div className="flex flex-col p-4 space-y-4">
@@ -147,8 +173,15 @@ export default function Navbar() {
                     {navigationItems.map((item) => (
                       <NavLink
                         key={item.name}
-                        to={item.to}
-                        onClick={() => setIsOpen(false)}
+                        to={item.requiresAuth && !user ? "#" : item.to}
+                        onClick={(e) => {
+                          if (item.requiresAuth && !user) {
+                            e.preventDefault()
+                            alert("Please log in to access this page.")
+                            return
+                          }
+                          setIsOpen(false)
+                        }}
                         className={({ isActive }) =>
                           `flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium ${
                             isActive

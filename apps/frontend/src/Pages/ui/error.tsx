@@ -5,9 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 
 const Error = () => {
   const navigate = useNavigate();
-  const onClick = () => {
-    "/dashboard";
-  }
+  
 
   return (
     <StyledWrapper>
@@ -65,7 +63,7 @@ const Error = () => {
             <div className="base3" />
           </div>
            <button
-        onClick={() => navigate('/dashboard')}
+        onClick={() => navigate('/')}
         className="go-back-btn"
       >
         <ArrowLeft className="w-4 h-4" />

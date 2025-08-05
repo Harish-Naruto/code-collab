@@ -8,6 +8,9 @@ import Button1 from './ui/button1';
 import { useNavigate } from "react-router-dom";
 import Footer from "./Footer"
 import RotatingText from "../blocks/TextAnimations/RotatingText/RotatingText"
+import Navbar from "./Navbar"
+import MagicBento from "../blocks/Components/MagicBento/MagicBento"
+
 
 
 
@@ -36,29 +39,13 @@ export default function LandingPage() {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+  
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       {/* Header */}
       <header className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-gray-800">
-        <div className="container mx-auto px-4 py-4">
-
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="text-2xl font-bold">
-                <span className="text-green-400">Code</span>
-                <span className="text-white">-Collab</span>
-
-              </div>
-            </div>
-            <div className="hidden md:flex items-center space-x-4">
-              <Button onClick={handleLogin} variant="ghost" className="text-white hover:bg-gray-800">
-                Login
-              </Button>
-              <Button onClick={handleSignUp} className="bg-green-500 hover:bg-green-600 text-black font-semibold">Sign Up</Button>
-            </div>
-          </div>
-        </div>
+        <Navbar/>
       </header>
 
       {/* Hero Section */}
@@ -79,8 +66,8 @@ export default function LandingPage() {
                   <span className="text-white">Code</span>
                   <span>&nbsp;Here&nbsp;</span>
                   <RotatingText
-                    texts={['Now', 'Faster', 'Smarter']} // Add more variations if needed
-                    mainClassName="px-2 sm:px-2 md:px-3 bg-cyan-300 text-black overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
+                    texts={['Now', 'Faster', 'Smarter']}
+                    mainClassName="px-2 sm:px-2 md:px-3 bg-white text-black overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
                     staggerFrom="last"
                     initial={{ y: "100%" }}
                     animate={{ y: 0 }}
@@ -91,7 +78,6 @@ export default function LandingPage() {
                     rotationInterval={2000}
                   />
                 </div>
-                
               </div>
             </h1>
             <p className="text-lg text-gray-400 mb-6 max-w-2xl mx-auto animate-fade-in-up animation-delay-500">

@@ -6,6 +6,7 @@ import Sidebar from "../components/Sidebar"
 import Editor from "../components/Editor"
 import Chat from "../components/Chat"
 import { Sun, Moon, TimerReset, Timer } from "lucide-react"
+import { Navigate, useNavigate } from "react-router-dom";
 
 const CodeCollabPage: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState("Editor.tsx")
@@ -14,7 +15,12 @@ const CodeCollabPage: React.FC = () => {
   const [seconds, setSeconds] = useState(0)
   const [isRunning, setIsRunning] = useState(true)
 
+  const navigate = useNavigate();
+  const handleHome = () => {
+    navigate("/");
+  };
   const toggleTheme = () => setIsDarkMode(!isDarkMode)
+  
 
   useEffect(() => {
     let timer: number
@@ -59,6 +65,7 @@ const CodeCollabPage: React.FC = () => {
             <button className="hover:underline">Edit</button>
             <button className="hover:underline">View</button>
             <button className="hover:underline">Terminal</button>
+            <button onClick={handleHome} className="hover:underline">Home</button>
           </nav>
         </div>
 

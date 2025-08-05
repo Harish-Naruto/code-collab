@@ -37,18 +37,7 @@ export default function LandingPage() {
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       {/* Header */}
       <header className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-gray-800">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="text-2xl font-bold">
-                <span className="text-green-400">Code</span>
-                <span className="text-white">-Collab</span>
-              </div>
-            </div>
-
           <Navbar />
-          </div>    
-        </div>
       </header>
 
       {/* Hero Section */}
