@@ -21,7 +21,7 @@ importers:
         specifier: 5.8.2
         version: 5.8.2
 
-  apps/api-server:
+  apps/Api-server:
     dependencies:
       '@supabase/supabase-js':
         specifier: ^2.50.0
