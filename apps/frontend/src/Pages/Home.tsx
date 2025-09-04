@@ -1,13 +1,19 @@
 import { useState, useEffect } from "react"
 import { Button } from "./ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
-import  Badge  from "./ui/badge"
+import Badge from "./ui/badge"
 import { Input } from "./ui/input"
-import  '../App.css';
-import  Button1  from './ui/button1';
+import '../App.css';
+import Button1 from './ui/button1';
 import { useNavigate } from "react-router-dom";
 import Footer from "./Footer"
+import RotatingText from "../blocks/TextAnimations/RotatingText/RotatingText"
 import Navbar from "./Navbar"
+import MagicBento from "../blocks/Components/MagicBento/MagicBento"
+
+
+
+
 
 import {
   Code,
@@ -17,14 +23,15 @@ import {
   ChevronDown,
 } from "lucide-react"
 
-  
-
 export default function LandingPage() {
   const [scrollY, setScrollY] = useState(0)
 
   const navigate = useNavigate();
-  const handleIde = () => {
-    navigate("/CodeCollabPage"); 
+  const handleLogin = () => {
+    navigate("/login");
+  };
+  const handleSignUp = () => {
+    navigate("/signup");
   };
 
   useEffect(() => {
@@ -32,12 +39,13 @@ export default function LandingPage() {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+  
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       {/* Header */}
       <header className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-gray-800">
-          <Navbar />
+        <Navbar/>
       </header>
 
       {/* Hero Section */}
@@ -53,16 +61,30 @@ export default function LandingPage() {
         <div className="container mx-auto px-4 text-center relative z-10 mb-34">
           <div className="animate-fade-in-up">
             <h1 className="text-2xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              <span className="text-white animate-slide-in-left">Code Here. </span>
-              <span className="bg-gradient-to-r from-pink-500 via-purple-500 to-purple-600 bg-clip-text text-transparent animate-slide-in-right">
-                Code Now.
-              </span>
+              <div className="flex justify-center items-center gap-2">
+                <div className="flex items-center gap-1  rounded-lg px-2 sm:px-2 md:px-3 py-0.5 sm:py-1 md:py-2 justify-center">
+                  <span className="text-white">Code</span>
+                  <span>&nbsp;Here&nbsp;</span>
+                  <RotatingText
+                    texts={['Now', 'Faster', 'Smarter']}
+                    mainClassName="px-2 sm:px-2 md:px-3 bg-white text-black overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
+                    staggerFrom="last"
+                    initial={{ y: "100%" }}
+                    animate={{ y: 0 }}
+                    exit={{ y: "-120%" }}
+                    staggerDuration={0.025}
+                    splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
+                    transition={{ type: "spring", damping: 30, stiffness: 400 }}
+                    rotationInterval={2000}
+                  />
+                </div>
+              </div>
             </h1>
             <p className="text-lg text-gray-400 mb-6 max-w-2xl mx-auto animate-fade-in-up animation-delay-500">
-             Coding For Best Future
+              Coding For Best Future
             </p>
             <div className=" mb-0 flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up animation-delay-700">
-              <Button1 onClick={handleIde} />
+              <Button1 onClick={handleLogin} />
             </div>
           </div>
         </div>
@@ -163,6 +185,31 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <h3 className="text-3xl font-bold mb-4">Online IDE Built for Education</h3>
+          <p className="text-gray-400 text-lg mb-6">
+            Write, run, & debug code in any web browser, no account or downloads needed.
+          </p>
+          <Button className="bg-green-500 hover:bg-green-600 text-black font-semibold">Start Coding</Button>
+        </div>
+        <div className="relative">
+          <Card className="bg-gray-900 border-gray-700 overflow-hidden">
+            <CardHeader className="bg-gray-800 border-b border-gray-700">
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+              </div>
+            </CardHeader>
+            <CardContent className="p-0">
+              <div className="bg-gradient-to-br from-purple-600 to-pink-600 h-64 flex items-center justify-center">
+                <div className="w-32 h-32 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full animate-pulse"></div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
 
       {/* Testimonials Section */}
       <section className="py-20 bg-black">
@@ -262,7 +309,7 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-      <Footer/>
+      <Footer />
     </div>
   )
 }
