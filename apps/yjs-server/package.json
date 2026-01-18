@@ -10,14 +10,17 @@
     "dev": " tsc -b && node dist/server.js"
   },
   "devDependencies": {
-    "@repo/typescript-config": "workspace:*"
+    "@repo/typescript-config": "workspace:*",
+    "@types/ws": "^8.18.1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "y-websocket": "^3.0.0",
+    "ws": "^8.18.2",
+    "y-protocols": "^1.0.6",
+    "y-websocket": "^1.4.5",
     "yjs": "^13.6.27"
   }
 }

@@ -1,1 +1,1 @@
-{"root":["./src/server.ts"],"version":"5.8.2"}
+{"root":["./src/server.ts","./src/config/pubsub.ts","./src/config/redis.ts","./src/utils/jwt.ts","./src/utils/types.ts","./src/ws/connection.ts","./src/ws/roomManagement.ts"],"version":"5.8.2"}

@@ -262,13 +262,17 @@ export const verify = async (req: Request, res: Response, next: NextFunction) =>
 
         res.status(StatusCodes.OK).json({
             status: 'success',
-            token: generatedToken,
-            user:{
-                id:userId,
-                email,
-                name,
-                username,
-                avatar_url:avatarUrl
+            data:
+            {
+                token: generatedToken,
+                user:{
+                    id:userId,
+                    email,
+                    name,
+                    username,
+                    avatar_url:avatarUrl
+                }
+
             }
         });
     } catch (error) {

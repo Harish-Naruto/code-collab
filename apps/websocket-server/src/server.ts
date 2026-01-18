@@ -1,19 +1,14 @@
-import { WebSocketServer } from "ws";
+import express from 'express';
+import { createServer } from 'http';
+import { WebSocketServer } from 'ws';
+import { handleConnection } from './ws/connection';
 
-const wss = new WebSocketServer({ port: 8080 });
+const app =  express();
+const server = createServer(app);
+const wss = new WebSocketServer({server});
 
-console.log("WebSocket server started on ws://localhost:8080");
+wss.on('connection',handleConnection);
 
-wss.on("connection", (ws) => {
-  console.log("New client connected");
-
-  ws.on("message", (message) => {
-    console.log(`Received message: ${message}`);
-    // Echo the message back to the client
-    ws.send(`Server received: ${message}`);
-  });
-
-  ws.on("close", () => {
-    console.log("Client disconnected");
-  });
-});
+server.listen(8080,()=>{
+  console.log('chat server is runnig on port 8080');
+})
