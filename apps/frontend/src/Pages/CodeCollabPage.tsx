@@ -9,6 +9,7 @@ import { Sun, Moon, TimerReset, Timer } from "lucide-react"
 import CollaborativeEditor from "../components/CodeEditor"
 import { useAuth } from "../hooks/useAuth"
 
+import { Navigate, useNavigate } from "react-router-dom";
 
 const CodeCollabPage: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(true)
@@ -17,7 +18,12 @@ const CodeCollabPage: React.FC = () => {
   const {user} = useAuth();
   const username = user?.username as string;
 
+  const navigate = useNavigate();
+  const handleHome = () => {
+    navigate("/");
+  };
   const toggleTheme = () => setIsDarkMode(!isDarkMode)
+  
 
   useEffect(() => {
     let timer: number
@@ -62,6 +68,7 @@ const CodeCollabPage: React.FC = () => {
             <button className="hover:underline">Edit</button>
             <button className="hover:underline">View</button>
             <button className="hover:underline">Terminal</button>
+            <button onClick={handleHome} className="hover:underline">Home</button>
           </nav>
         </div>
 

@@ -1,84 +1,160 @@
-# Turborepo starter
+# Code Collab
 
-This Turborepo starter is maintained by the Turborepo core team.
+A real-time collaborative code editor platform that enables developers to code together, share ideas, and collaborate seamlessly in a distributed environment.
 
-## Using this example
+## Overview
 
-Run the following command:
+Code Collab is a full-stack collaborative coding platform built with modern web technologies. It provides real-time code editing capabilities, user authentication, project management, and integrated chat functionality. The platform uses Yjs for conflict-free replicated data types (CRDTs) to ensure seamless real-time collaboration.
 
-```sh
-npx create-turbo@latest
-```
+## Features
+
+- **Real-time Collaborative Editing**: Multiple users can edit code simultaneously with live cursor tracking
+- **User Authentication**: Secure authentication system powered by Supabase
+- **Project Management**: Create, manage, and organize coding projects
+- **Integrated Chat**: Built-in chat system for team communication
+- **Monaco Editor Integration**: Professional-grade code editor with syntax highlighting
+- **Room-based Collaboration**: Create or join coding rooms for focused collaboration
+- **Dark/Light Mode**: Toggle between themes for comfortable coding experience
+- **Session Timer**: Built-in stopwatch to track coding sessions
+
+## Tech Stack
+
+### Frontend
+- **React 19** with TypeScript
+- **Vite** for fast development and building
+- **Monaco Editor** for code editing
+- **Tailwind CSS** for styling
+- **Framer Motion** for animations
+- **React Router** for navigation
+- **Supabase Client** for authentication
+
+### Backend
+- **Express.js** REST API server
+- **WebSocket Server** for real-time communication
+- **Yjs WebSocket Server** for CRDT-based collaboration
+- **Supabase** for database and authentication
+- **JWT** for token-based authentication
+
+### Infrastructure
+- **Turborepo** for monorepo management
+- **pnpm** for package management
+- **TypeScript** throughout the stack
+- **ESLint** for code quality
+- **Prettier** for code formatting
 
 ## What's inside?
 
 This Turborepo includes the following packages/apps:
 
-### Apps and Packages
+### Apps
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+- `frontend`: React + Vite application with Monaco Editor and collaboration features
+- `Api-server`: Express.js REST API server handling authentication and user management
+- `websocket-server`: WebSocket server for real-time communication
+- `yjs-server`: Yjs WebSocket server for collaborative editing with CRDTs
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+### Packages
 
-### Utilities
+- `@repo/ui`: Shared React component library
+- `@repo/common`: Common types and utilities shared across apps
+- `@repo/backend-common`: Shared backend utilities and configurations
+- `@repo/eslint-config`: Shared ESLint configurations
+- `@repo/typescript-config`: Shared TypeScript configurations
 
-This Turborepo has some additional tools already setup for you:
+## Getting Started
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+### Prerequisites
 
-### Build
+- Node.js >= 18
+- pnpm 9.0.0 or higher
+- Supabase account (for authentication)
 
-To build all apps and packages, run the following command:
+### Installation
 
+1. Clone the repository:
+```bash
+git clone https://github.com/Harish-Naruto/code-collab.git
+cd code-collab
 ```
-cd my-turborepo
-pnpm build
+
+2. Install dependencies:
+```bash
+pnpm install
 ```
 
-### Develop
+3. Set up environment variables:
+   - Configure Supabase credentials for the frontend and API server
+   - Set up necessary environment variables in each app directory
 
-To develop all apps and packages, run the following command:
+### Development
 
-```
-cd my-turborepo
+To run all apps in development mode:
+
+```bash
 pnpm dev
 ```
 
-### Remote Caching
+This will start:
+- Frontend on default Vite port (usually 5173)
+- API server
+- WebSocket server
+- Yjs server
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+### Build
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+To build all apps and packages:
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
+```bash
+pnpm build
 ```
 
-## Useful Links
+### Other Commands
 
-Learn more about the power of Turborepo:
+```bash
+# Run linting across all packages
+pnpm lint
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+# Format code
+pnpm format
+
+# Type checking
+pnpm check-types
+```
+
+## Project Structure
+
+```
+code-collab/
+├── apps/
+│   ├── frontend/          # React frontend application
+│   ├── Api-server/        # Express REST API
+│   ├── websocket-server/  # Real-time WebSocket server
+│   └── yjs-server/        # Yjs CRDT collaboration server
+├── packages/
+│   ├── ui/                # Shared UI components
+│   ├── common/            # Common utilities
+│   ├── backend-common/    # Backend utilities
+│   ├── eslint-config/     # ESLint configurations
+│   └── typescript-config/ # TypeScript configurations
+└── supabase/              # Supabase migrations and types
+```
+
+## Routes
+
+- `/` - Landing page
+- `/login` - User login
+- `/signup` - User registration
+- `/dashboard` - User dashboard
+- `/profile` - User profile management
+- `/create-room` - Create a new collaboration room
+- `/join-room` - Join an existing room
+- `/code-collab-page` - Main collaborative coding interface
+- `/forgot-password` - Password recovery
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+ISC
